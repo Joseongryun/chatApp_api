@@ -13,7 +13,6 @@ function configApp(){
   app.use(bodyParser.urlencoded({extends: false}));
   app.use(cookieParser());
 }
-
 configApp();
 
 app.listen(3000, function(){
