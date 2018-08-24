@@ -25,7 +25,8 @@ module.exports = function (sequelize, DataTypes) {
     isOnline: {
       field: "is_online",
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: false,
     }
   }, {
     underscored: true,

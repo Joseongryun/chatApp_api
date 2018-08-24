@@ -4,7 +4,7 @@ var Sequelize = require('sequelize');
 var sequelize = new Sequelize(
   'chatApp',
   'root',
-  'dsm10120',
+  'password',
   {
     'host': 'localhost',
     'port': 3306,
