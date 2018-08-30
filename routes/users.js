@@ -131,4 +131,33 @@ router.get('/info', (req, res) => {
   }
 });
 
+router.get('/logout', (req, res) => {
+  var token = req.token;
+  if (typeof token === undefined) {
+    let data = {
+      success: false,
+      message: "권한이 없습니다. 로그인을 진행해 주세요."
+    }
+    res.status(400).json(data);
+    return;
+  } else {
+    var username = token.user.username;
+    models.db.Users.update({
+      isOnline: false
+    }, {
+      where: {
+        username: username
+      }
+    }).then(result => {
+      let data = {
+        success: true,
+        message: '로그아웃에 성공하였습니다.'
+      }
+      res.status(200).json(data);
+    }).catch(err => {
+      console.log('로그아웃 프로세스 오류 : ' + err);
+    });
+  }
+})
+
 module.exports = router;
