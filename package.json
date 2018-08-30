@@ -21,5 +21,6 @@
     "sequelize": "^4.38.0",
     "socket.io": "^2.1.1",
     "supervisor": "^0.12.0"
-  }
+  },
+  "devDependencies": {}
 }

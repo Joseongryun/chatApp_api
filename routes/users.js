@@ -97,7 +97,7 @@ router.post('/signup', (req, res) => {
 
 router.get('/info', (req, res) => {
   var token = req.token;
-  if (typeof token === undefined) {
+  if (typeof token == undefined || token == "" || token == null) {
     let data = {
       success: false,
       message: "권한이 없습니다. 로그인을 진행해 주세요."
@@ -110,8 +110,9 @@ router.get('/info', (req, res) => {
         uid: token.user.uId,
         username: token.user.username
       }
-    }).then(user => {
-      if (!user) {
+    }).then(result => {
+      console.log(result);
+      if (result === undefined) {
         let data = {
           success: false,
           message: "권한이 없습니다. 로그인을 진행해 주세요."
@@ -121,7 +122,7 @@ router.get('/info', (req, res) => {
         let data = {
           success: true,
           message: "회원정보 로드에 성공하였습니다.",
-          data: user
+          data: result
         }
         res.status(200).json(data);
       }
@@ -133,7 +134,7 @@ router.get('/info', (req, res) => {
 
 router.get('/logout', (req, res) => {
   var token = req.token;
-  if (typeof token === undefined) {
+  if (typeof token == undefined || token == "" || token == null) {
     let data = {
       success: false,
       message: "권한이 없습니다. 로그인을 진행해 주세요."

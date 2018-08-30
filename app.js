@@ -23,7 +23,7 @@ function configApp() {
     next();
   });
   app.use(require('./utils/JWT'));
-  app.use('/',routes);
+  app.use('/', routes);
 }
 
 configApp();
