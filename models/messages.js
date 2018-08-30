@@ -16,6 +16,11 @@ module.exports = function (sequelize, DataTypes) {
       field: "r_uid",
       type: DataTypes.STRING(32),
       allowNull: false
+    },
+    content : {
+      field: "content",
+      type: DataTypes.STRING(100),
+      allowNull: false
     }
   }, {
     underscored: true,

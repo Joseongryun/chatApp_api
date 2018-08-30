@@ -4,7 +4,7 @@ var Sequelize = require('sequelize');
 var sequelize = new Sequelize(
   'chatApp',
   'root',
-  'password',
+  'dsm10120',
   {
     'host': 'localhost',
     'port': 3306,
@@ -21,4 +21,4 @@ fs.readdirSync(__dirname).filter(function (file) {
   db[model.name] = model;
 });
 
-module.exports = db;
+module.exports = {db, Sequelize, sequelize};

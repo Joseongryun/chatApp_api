@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 router.post('/signin', (req, res) => {
   var reqUsername = req.body.username;
   var reqPassword = req.body.password;
-  models.Users.findOne({
+  models.db.Users.findOne({
       where: {
         username: reqUsername
       }
@@ -26,32 +26,33 @@ router.post('/signin', (req, res) => {
           message: '회원 아이디와 비밀번호 정보가 일치하지 않습니다.'
         }
         res.status(400).json(data);
-      } else {
-        let token = jwt.sign({
-          user: {
-            uId: user.uId,
-            username: user.userName
-          }
-        }, config.salt, {
-          algorithm: config.jwtAlgorithm
-        });
-        models.Users.update({
-          is_online: 1
-        }, {
-          where: {
-            username: reqUsername
-          }
-        }).then(user => {
-          let data = {
-            success: true,
-            message: '로그인에 성공하였습니다.',
-            token: token
-          }
-          res.status(200).json(data);
-        }).catch(err => {
-          console.log('로그인 프로세스 오류 : ' + err);
-        });
       }
+      var secret = config.salt;
+      let token = jwt.sign({
+        user: {
+          uId: user.uId,
+          username: user.userName
+        }
+      }, secret, {
+        algorithm: config.jwtAlgorithm
+      });
+      models.db.Users.update({
+        isOnline: true
+      }, {
+        where: {
+          username: reqUsername
+        }
+      }).then(result => {
+        let data = {
+          success: true,
+          message: '로그인에 성공하였습니다.',
+          token: token
+        }
+        res.status(200).json(data);
+      }).catch(err => {
+        console.log('로그인 프로세스 오류 : ' + err);
+      });
+
     }).catch(err => {
       console.log('로그인 프로세스 오류 : ' + err);
     })
@@ -61,14 +62,13 @@ router.post('/signup', (req, res) => {
   var reqUsername = req.body.username;
   var reqPassword = req.body.password;
   var reqDescription = req.body.description;
-  console.log(reqUsername, reqPassword, reqDescription);
-  models.Users.findOne({
+  models.db.Users.findOne({
     where: {
       username: reqUsername
     }
   }).then(user => {
     if (!user) {
-      models.Users.create({
+      models.db.Users.create({
         userName: reqUsername,
         password: reqPassword,
         description: reqDescription,
@@ -105,7 +105,7 @@ router.get('/info', (req, res) => {
     res.status(400).json(data);
     return;
   } else {
-    models.Users.findOne({
+    models.db.Users.findOne({
       where: {
         uid: token.user.uId,
         username: token.user.username
